@@ -107,12 +107,6 @@ export default function ReturnHistogram({ result }: Props) {
             {result.var_pct.toFixed(3)}%
           </p>
         </div>
-        <div className="text-center">
-          <p className="text-xs text-text-muted">CVaR journalière</p>
-          <p className="font-mono text-sm font-medium mt-1 text-orange-400">
-            {result.cvar_pct.toFixed(3)}%
-          </p>
-        </div>
       </div>
     </div>
   );
