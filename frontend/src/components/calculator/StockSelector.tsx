@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Search, Plus, X, Globe, Database, RefreshCw, Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
-import { getStockPrices } from "@/lib/api";
+import { getStockPrices, searchStocks } from "@/lib/api";
 import { getSectorBg, formatCurrency } from "@/lib/utils";
 import type { StockInfo, StockWeight } from "@/types";
 
@@ -46,12 +46,9 @@ export default function StockSelector({ selected, onAdd, onRemove, onValorise }:
   const doSearch = useCallback(async () => {
     setLoading(true);
     try {
-      const resp = await fetch(
-        `http://localhost:8000/stocks/search?q=${encodeURIComponent(query)}&index=${encodeURIComponent(activeIndex)}`
-      );
-      const data = await resp.json();
-      setResults(data.stocks ?? []);
-      setSource(data.source ?? "local");
+      const stocks = await searchStocks(query, activeIndex);
+      setResults(stocks);
+      setSource(query.length > 2 && stocks.length > 0 ? "yahoo" : "local");
     } catch {
       setResults([]);
     } finally {
